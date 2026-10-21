@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mídia Kit</title>
+<meta name="description" content="Mídia kit com dados do Instagram atualizados automaticamente.">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: {
+    "paper-cream": "#F4F1EA", "muted-stone": "#E7E2D7", "subtle-border": "#D8D2C4",
+    "background": "#fcf9f2", "surface-variant": "#e5e2db",
+    "surface-container-lowest": "#ffffff", "surface-container-low": "#f6f3ec",
+    "surface-container": "#f1eee7", "surface-container-high": "#ebe8e1",
+    "on-surface": "#1c1c18", "on-surface-variant": "#5b3f44",
+    "primary": "#b9004d", "primary-container": "#e21a63", "primary-fixed": "#ffd9de",
+    "primary-fixed-dim": "#ffb2bf", "on-primary-fixed": "#3f0015",
+    "secondary": "#625d5b", "secondary-fixed": "#e9e1dd", "secondary-fixed-dim": "#ccc5c2",
+    "tertiary": "#006b33", "tertiary-container": "#008742",
+    "error": "#ba1a1a", "electric-magenta": "#E21A63", "electric-blue": "#2F6BDB", "charcoal-dark": "#1C1917", "pure-white": "#FFFFFF"
+  },
+  spacing: { "gutter": "1.5rem", "space-md": "1rem", "space-lg": "1.75rem", "space-xl": "3rem" },
+  fontFamily: {
+    "display": ["Bricolage Grotesque", "sans-serif"],
+    "body": ["Inter", "sans-serif"]
+  },
+  fontSize: {
+    "display-hero": ["64px", { lineHeight: "68px", letterSpacing: "-0.03em", fontWeight: "800" }],
+    "display-hero-mobile": ["42px", { lineHeight: "46px", letterSpacing: "-0.02em", fontWeight: "800" }],
+    "metric-huge": ["52px", { lineHeight: "56px", letterSpacing: "-0.03em", fontWeight: "800" }],
+    "headline-lg": ["42px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }],
+    "headline-lg-mobile": ["28px", { lineHeight: "34px", letterSpacing: "-0.01em", fontWeight: "700" }],
+    "headline-md": ["26px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+    "headline-sm": ["20px", { lineHeight: "26px", fontWeight: "600" }],
+    "button-text": ["14px", { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "600" }],
+    "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.12em", fontWeight: "700" }],
+    "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+    "body-md": ["15px", { lineHeight: "24px", fontWeight: "400" }],
+    "body-sm": ["13px", { lineHeight: "20px", fontWeight: "400" }]
+  }
+} } };
+</script>
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body { overscroll-behavior: none; }
+  .material-symbols-outlined { font-size: inherit; line-height: 1; vertical-align: middle; }
+  #carrossel { scrollbar-width: none; }
+  #carrossel::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body class="bg-background font-body text-body-md text-on-surface antialiased">
+
+<header id="topo" class="fixed top-0 w-full z-50 bg-paper-cream/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,25,23,0.06)]">
+  <div class="h-20 max-w-7xl mx-auto px-4 sm:px-gutter flex items-center justify-between gap-4">
+    <nav class="hidden xl:flex items-center gap-space-lg font-display text-button-text text-on-surface-variant">
+      <a class="hover:text-on-surface transition-colors" href="#sobre">Sobre</a>
+      <a class="hover:text-on-surface transition-colors" href="#metricas">Métricas</a>
+      <a class="hover:text-on-surface transition-colors" href="#audiencia">Audiência</a>
+      <a class="hover:text-on-surface transition-colors" href="#conteudos">Conteúdos</a>
+      <a class="hover:text-on-surface transition-colors hidden" href="#integracoes" id="nav-integracoes">Marcas</a>
+      <a class="hover:text-on-surface transition-colors hidden" href="#parcerias" id="nav-parcerias">Parcerias</a>
+      <a class="hover:text-on-surface transition-colors" href="#contato">Contato</a>
+    </nav>
+    <div class="flex items-center gap-space-md shrink-0 ml-auto">
+      <a id="btn-whatsapp" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary-container text-pure-white font-display text-button-text shadow-sm hover:opacity-95 transition-all">
+        <span class="material-symbols-outlined text-[18px]">chat</span><span class="hidden sm:inline">Falar no WhatsApp</span>
+      </a>
+      <div class="relative flex items-center">
+        <img id="avatar" alt="Foto de perfil" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full object-cover ring-2 ring-pure-white shadow-sm bg-muted-stone">
+        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-tertiary-container rounded-full ring-2 ring-pure-white"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="w-full pt-20 bg-background">
+
+  <div id="aviso-exemplo" class="hidden max-w-7xl mx-auto px-4 sm:px-gutter pt-4">
+    <div class="flex items-start gap-2 rounded-2xl bg-primary-fixed text-on-primary-fixed px-4 py-3 text-body-sm">
+      <span class="material-symbols-outlined text-[18px] mt-0.5">info</span>
+      <span><strong>Dados de exemplo.</strong> Conecte sua conta do Instagram (veja o README) para mostrar os números reais.</span>
+    </div>
+  </div>
+  <div id="aviso-erro" class="hidden max-w-7xl mx-auto px-4 sm:px-gutter pt-4">
+    <div class="rounded-2xl bg-surface-container px-4 py-3 text-body-sm">Não foi possível carregar os dados agora. Tente recarregar a página.</div>
+  </div>
+
+  <!-- Hero -->
+  <section id="sobre" class="max-w-7xl mx-auto w-full px-4 sm:px-gutter pb-12 pt-6">
+    <div class="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-[#E21A63] via-[#C91353] to-[#8A0038] text-pure-white shadow-xl p-6 sm:p-10 lg:p-14">
+      <div id="fundo-1" class="absolute -right-8 -top-10 select-none pointer-events-none opacity-10 font-display text-[180px] leading-none tracking-tighter font-extrabold whitespace-nowrap uppercase"></div>
+      <div id="fundo-2" class="absolute -left-12 -bottom-16 select-none pointer-events-none opacity-5 font-display text-[160px] leading-none tracking-tighter font-extrabold whitespace-nowrap uppercase"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-body-sm tracking-widest uppercase text-primary-fixed bg-charcoal-dark/30 backdrop-blur-md px-3.5 py-1 rounded-full">✨ Olá! Boas-vindas ao meu universo</span>
+          </div>
+          <div class="flex flex-col">
+            <h1 id="nome" class="font-display text-display-hero-mobile sm:text-[76px] sm:leading-[78px] tracking-tight break-words"></h1>
+            <p class="font-display text-headline-sm text-primary-fixed-dim italic mt-1"><span data-arroba></span> • <span data-cfg="descricao"></span></p>
+          </div>
+          <div id="tags" class="flex flex-wrap gap-2 pt-1"></div>
+          <div class="bg-charcoal-dark/25 backdrop-blur-md rounded-2xl p-5">
+            <p id="manifesto" class="text-body-lg text-pure-white/95 leading-relaxed"></p>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#contato" class="inline-flex items-center gap-2 bg-charcoal-dark text-pure-white px-7 py-3.5 rounded-full font-display text-button-text shadow-lg hover:bg-black transition-transform active:scale-95">
+              <span class="material-symbols-outlined text-[18px] text-electric-magenta">mail</span>Solicitar proposta comercial
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex justify-center relative">
+          <div class="absolute -top-3 left-6 z-20 bg-charcoal-dark/90 text-pure-white backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold tracking-wider flex items-center gap-1.5 shadow-md">
+            <span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>AO VIVO • FEED ATIVO
+          </div>
+          <a id="hero-card" target="_blank" rel="noopener" class="block relative w-full max-w-[340px] bg-paper-cream p-4 rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-300">
+            <div class="relative rounded-2xl overflow-hidden bg-charcoal-dark aspect-[9/13]">
+              <img id="foto" alt="" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark/80 via-transparent to-transparent flex flex-col justify-end p-5">
+                <span class="text-xs font-bold tracking-wider uppercase text-primary-fixed bg-electric-magenta/80 px-2.5 py-0.5 rounded-md self-start">Último Reels no ar</span>
+                <p id="hero-legenda" class="font-display text-headline-sm text-pure-white mt-1 line-clamp-2"></p>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-pure-white/80 mt-2">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">visibility</span><span id="hero-views"></span> views</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">favorite</span><span id="hero-likes"></span> curtidas</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">send</span><span id="hero-envios"></span> envios</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between px-2">
+              <span class="font-display text-label-caps text-charcoal-dark uppercase">#comunidadeativa</span>
+              <span class="text-xs italic text-primary font-bold">deu match! 💋</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Métricas -->
+  <section id="metricas" class="max-w-7xl mx-auto w-full px-4 sm:px-gutter py-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-electric-magenta"></span>
+          <span class="font-display text-label-caps text-secondary uppercase tracking-wider">Métricas consolidadas</span>
+        </div>
+        <h2 class="font-display text-headline-lg-mobile sm:text-headline-lg text-charcoal-dark tracking-tight">Performance &amp; alcance orgânico</h2>
+      </div>
+      <div class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full self-start md:self-auto">
+        <span class="material-symbols-outlined text-secondary text-sm">calendar_month</span>
+        <span class="text-body-sm text-on-surface font-medium">Dados via API Meta • atualizado em <span id="atualizado"></span></span>
+      </div>
+    </div>
+    <div id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </section>
+
+  <!-- Audiência -->
+  <section id="audiencia" class="max-w-7xl mx-auto w-full px-4 sm:px-gutter py-10">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-10 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8">
+        <div>
+          <span class="font-display text-label-caps text-primary uppercase tracking-widest">Perfil demográfico</span>
+          <h3 class="font-display text-headline-md text-charcoal-dark">Quem é a minha comunidade?</h3>
+        </div>
+        <span id="base-publico" class="self-start md:self-auto px-3.5 py-1.5 rounded-full bg-primary-fixed font-display text-label-caps text-on-primary-fixed uppercase"></span>
+      </div>
+      <div id="publico-indisponivel" class="hidden text-body-md text-secondary">Os dados de público aparecem quando a conta passa de 100 seguidores.</div>
+      <div id="publico" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="flex flex-col gap-4 bg-surface-container-low p-6 rounded-2xl">
+          <div class="flex items-center justify-between">
+            <h4 class="font-display text-headline-sm text-charcoal-dark">Gênero</h4>
+            <span class="material-symbols-outlined text-secondary text-xl">wc</span>
+          </div>
+          <div class="flex items-center justify-center py-4">
+            <div class="relative w-40 h-40 flex items-center justify-center">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
+                <path class="text-muted-stone" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.8"></path>
+                <path id="donut-f" class="text-electric-magenta" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="0, 100" stroke-width="4.2"></path>
+                <path id="donut-m" class="text-electric-blue" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="0, 100" stroke-width="4.2"></path>
+              </svg>
+              <div class="absolute flex flex-col items-center">
+                <span id="genero-principal" class="font-display text-[32px] text-charcoal-dark font-extrabold leading-none"></span>
+                <span id="genero-principal-rotulo" class="font-display text-label-caps text-secondary uppercase mt-0.5"></span>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-around gap-2 pt-2 text-body-sm">
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-electric-magenta"></span><span id="leg-f" class="text-charcoal-dark"></span></div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-electric-blue"></span><span id="leg-m" class="text-charcoal-dark"></span></div>
+            <div id="leg-u-item" class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-muted-stone"></span><span id="leg-u" class="text-secondary"></span></div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 bg-surface-container-low p-6 rounded-2xl">
+          <div class="flex items-center justify-between">
+            <h4 class="font-display text-headline-sm text-charcoal-dark">Faixa etária</h4>
+            <span class="material-symbols-outlined text-secondary text-xl">cake</span>
+          </div>
+          <div id="idades" class="flex flex-col gap-3 py-2"></div>
+          <p id="nota-idade" class="text-body-sm text-secondary italic mt-auto"></p>
+        </div>
+
+        <div class="flex flex-col gap-4 bg-surface-container-low p-6 rounded-2xl">
+          <div class="flex items-center justify-between">
+            <h4 class="font-display text-headline-sm text-charcoal-dark">Principais cidades</h4>
+            <span class="material-symbols-outlined text-secondary text-xl">pin_drop</span>
+          </div>
+          <div id="cidades" class="space-y-3 py-1"></div>
+          <span id="paises" class="font-display text-label-caps text-tertiary font-bold flex items-center gap-1 mt-auto"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conteúdos em destaque -->
+  <section id="conteudos" class="max-w-7xl mx-auto w-full px-4 sm:px-gutter py-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+          <span class="font-display text-label-caps text-primary uppercase tracking-wider">Conteúdos em destaque</span>
+        </div>
+        <h2 class="font-display text-headline-lg-mobile sm:text-headline-lg text-charcoal-dark tracking-tight">Reels mais vistos &amp; engajamento recorde</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" aria-label="Voltar" data-rolar="-1" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-variant transition-colors">
+          <span class="material-symbols-outlined text-charcoal-dark text-2xl">arrow_back</span>
+        </button>
+        <button type="button" aria-label="Avançar" data-rolar="1" class="w-10 h-10 rounded-full bg-charcoal-dark text-pure-white flex items-center justify-center hover:bg-black transition-colors">
+          <span class="material-symbols-outlined text-2xl">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+    <div id="carrossel" class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2"></div>
+  </section>
+
+  <!-- Como eu integro marcas -->
+  <section id="integracoes" class="hidden max-w-7xl mx-auto w-full px-4 sm:px-gutter py-10">
+    <div class="bg-charcoal-dark text-pure-white rounded-3xl p-6 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2 h-2 rounded-full bg-electric-magenta"></span>
+            <span class="font-display text-label-caps text-primary-fixed-dim uppercase tracking-wider">Para marcas</span>
+          </div>
+          <h2 class="font-display text-headline-lg-mobile sm:text-headline-lg tracking-tight">Como eu integro marcas</h2>
+        </div>
+        <p id="integracoes-texto" class="text-body-lg text-pure-white/85"></p>
+        <ul id="integracoes-pontos" class="flex flex-col gap-3"></ul>
+      </div>
+      <div id="integracoes-exemplos" class="lg:col-span-5 flex flex-wrap justify-center gap-6"></div>
+    </div>
+  </section>
+
+  <!-- Parcerias -->
+  <section id="parcerias" class="hidden max-w-7xl mx-auto w-full px-4 sm:px-gutter py-8">
+    <div class="flex items-center gap-2 mb-1">
+      <span class="w-2 h-2 rounded-full bg-electric-magenta"></span>
+      <span class="font-display text-label-caps text-secondary uppercase tracking-wider">Parcerias</span>
+    </div>
+    <h2 class="font-display text-headline-lg-mobile sm:text-headline-lg text-charcoal-dark tracking-tight mb-8">Marcas que já confiaram</h2>
+    <div id="lista-parceiros" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"></div>
+  </section>
+
+  <!-- Contato -->
+  <section id="contato" class="max-w-7xl mx-auto w-full px-4 sm:px-gutter py-14">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-12 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        <div>
+          <span class="font-display text-label-caps text-primary uppercase tracking-widest">Contato direto</span>
+          <h2 class="font-display text-headline-lg-mobile sm:text-headline-lg text-charcoal-dark mt-1">Vamos criar algo inesquecível juntas?</h2>
+          <p class="text-body-md text-secondary mt-2">Envie o briefing da sua campanha ou chame no WhatsApp para uma conversa rápida.</p>
+        </div>
+        <div class="space-y-4 pt-2">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-primary text-xl"><span class="material-symbols-outlined">alternate_email</span></span>
+            <div class="min-w-0">
+              <span class="block text-xs text-secondary uppercase font-display font-semibold">E-mail comercial</span>
+              <a id="contato-email" class="text-body-md font-bold text-charcoal-dark hover:underline break-all"></a>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-tertiary text-xl"><span class="material-symbols-outlined">chat</span></span>
+            <div>
+              <span class="block text-xs text-secondary uppercase font-display font-semibold">WhatsApp</span>
+              <a id="contato-whatsapp" target="_blank" rel="noopener" class="text-body-md font-bold text-charcoal-dark hover:underline"></a>
+            </div>
+          </div>
+        </div>
+        <div id="selo" class="hidden p-4 rounded-2xl bg-surface-container flex items-center gap-3 mt-4">
+          <span class="material-symbols-outlined text-electric-magenta text-xl">verified</span>
+          <p id="selo-texto" class="text-body-sm text-charcoal-dark"></p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 bg-surface-container-low p-6 sm:p-8 rounded-3xl">
+        <h3 class="font-display text-headline-sm text-charcoal-dark mb-4">Solicitar proposta de parceria</h3>
+        <form id="form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="block"><span class="block font-display text-label-caps text-charcoal-dark uppercase mb-1.5">Seu nome / agência</span>
+              <input name="nome" required type="text" placeholder="Ex: Camila Santos (Agência Glow)" class="w-full h-12 px-4 rounded-xl bg-pure-white text-charcoal-dark shadow-sm focus:outline-none focus:ring-2 focus:ring-electric-magenta"></label>
+            <label class="block"><span class="block font-display text-label-caps text-charcoal-dark uppercase mb-1.5">Marca anunciante</span>
+              <input name="marca" required type="text" placeholder="Ex: Marca de cosméticos" class="w-full h-12 px-4 rounded-xl bg-pure-white text-charcoal-dark shadow-sm focus:outline-none focus:ring-2 focus:ring-electric-magenta"></label>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="block"><span class="block font-display text-label-caps text-charcoal-dark uppercase mb-1.5">E-mail corporativo</span>
+              <input name="email" required type="email" placeholder="contato@marca.com.br" class="w-full h-12 px-4 rounded-xl bg-pure-white text-charcoal-dark shadow-sm focus:outline-none focus:ring-2 focus:ring-electric-magenta"></label>
+            <label class="block"><span class="block font-display text-label-caps text-charcoal-dark uppercase mb-1.5">Telefone / WhatsApp</span>
+              <input name="telefone" type="tel" placeholder="(11) 90000-0000" class="w-full h-12 px-4 rounded-xl bg-pure-white text-charcoal-dark shadow-sm focus:outline-none focus:ring-2 focus:ring-electric-magenta"></label>
+          </div>
+          <label class="block"><span class="block font-display text-label-caps text-charcoal-dark uppercase mb-1.5">Objetivo da campanha &amp; prazos</span>
+            <textarea name="mensagem" rows="3" placeholder="Conte brevemente sobre o produto, cronograma previsto e entregas desejadas..." class="w-full p-4 rounded-xl bg-pure-white text-charcoal-dark shadow-sm focus:outline-none focus:ring-2 focus:ring-electric-magenta resize-none"></textarea></label>
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-electric-magenta text-pure-white font-display text-button-text shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">send</span>Enviar por e-mail
+            </button>
+            <span class="text-xs text-secondary font-medium" data-cfg="tempoResposta"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="w-full bg-surface-container-low py-space-xl border-t border-subtle-border">
+  <div class="max-w-7xl mx-auto px-4 sm:px-gutter flex flex-col md:flex-row items-center justify-between gap-space-lg text-center md:text-left">
+    <div class="flex flex-col items-center md:items-start gap-1">
+      <p class="font-display text-headline-sm text-charcoal-dark">Propostas &amp; branded content</p>
+      <a id="rodape-email" class="text-body-md text-primary font-medium hover:underline break-all"></a>
+    </div>
+    <a id="rodape-instagram" target="_blank" rel="noopener" class="font-display text-button-text text-secondary hover:text-charcoal-dark transition-colors">Instagram</a>
+    <div class="md:text-right text-body-sm text-secondary">
+      <p>© <span id="ano"></span> <span data-cfg="nome"></span></p>
+      <p class="text-on-surface-variant">Dados oficiais do Instagram, atualizados automaticamente</p>
+      <a href="#topo" class="hover:underline">Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var compacto = new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 });
+  function num(n) { return n == null ? '—' : compacto.format(n); }
+  function pct(n, casas) {
+    if (n == null) return '—';
+    casas = casas == null ? 1 : casas;
+    return n.toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas }) + '%';
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function carregar(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error(url + ' (' + r.status + ')');
+      return r.json();
+    });
+  }
+  var PAISES = { BR: 'Brasil', PT: 'Portugal', US: 'EUA', AR: 'Argentina', ES: 'Espanha', MX: 'México', AO: 'Angola', JP: 'Japão', IT: 'Itália', FR: 'França', GB: 'Reino Unido', DE: 'Alemanha', CA: 'Canadá' };
+
+  function cartao(c) {
+    return '<div class="bg-surface-container-lowest p-6 rounded-3xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">' +
+      '<div class="flex items-center justify-between gap-2"><span class="font-display text-label-caps text-secondary uppercase">' + c.rotulo + '</span>' +
+      '<span class="material-symbols-outlined text-electric-magenta text-xl">' + c.icone + '</span></div>' +
+      '<div class="my-6"><div class="font-display text-metric-huge tracking-tight ' + (c.destaque ? 'text-electric-magenta' : 'text-charcoal-dark') + '">' + c.valor + '</div>' +
+      '<p class="text-body-sm text-secondary mt-1">' + c.sub + '</p></div>' +
+      '<div class="flex items-center gap-2 bg-surface-container-low -mx-6 -mb-6 p-4 rounded-b-3xl">' +
+      '<span class="inline-flex items-center gap-0.5 text-xs font-bold ' + (c.rodapeCor || 'text-tertiary') + '"><span class="material-symbols-outlined text-sm">' + c.rodapeIcone + '</span>' + c.rodapeValor + '</span>' +
+      '<span class="text-xs text-secondary">' + c.rodapeTexto + '</span></div></div>';
+  }
+
+  function render(cfg, d) {
+    var perfil = d.perfil || {};
+    var r = d.resumo || {};
+    var usuario = perfil.username || cfg.usuario;
+    var nome = cfg.nome || perfil.name || usuario;
+    var linkIg = 'https://www.instagram.com/' + encodeURIComponent(usuario) + '/';
+    var wa = 'https://wa.me/' + String(cfg.contato.whatsapp || '').replace(/\D/g, '');
+
+    document.title = 'Mídia Kit • ' + nome;
+    document.querySelectorAll('[data-cfg]').forEach(function (el) { el.textContent = cfg[el.dataset.cfg] || ''; });
+    document.querySelectorAll('[data-arroba]').forEach(function (el) { el.textContent = '@' + usuario; });
+    if (d.exemplo) $('aviso-exemplo').classList.remove('hidden');
+
+    $('avatar').src = perfil.profile_picture_url || cfg.fotoUrl;
+    $('btn-whatsapp').href = wa;
+
+    // Hero
+    var partes = nome.split(/\s+/);
+    $('nome').innerHTML = partes.length > 1 ? esc(partes[0]) + '<br class="hidden sm:inline"> ' + esc(partes.slice(1).join(' ')) : esc(nome);
+    $('fundo-1').textContent = partes[0];
+    $('fundo-2').textContent = partes.length > 1 ? partes[partes.length - 1] : '';
+    $('tags').innerHTML = (cfg.tags || []).map(function (t, i) {
+      return '<span class="px-3.5 py-1 rounded-full text-xs font-display font-semibold ' +
+        (i === 0 ? 'bg-pure-white text-charcoal-dark shadow-sm' : 'bg-pure-white/15 backdrop-blur-md text-pure-white') + '">' + esc(t) + '</span>';
+    }).join('');
+    $('manifesto').textContent = cfg.manifesto || perfil.biography || '';
+    var ultimo = d.ultimoReel;
+    $('foto').referrerPolicy = 'no-referrer';
+    $('foto').src = (ultimo && ultimo.thumb) || cfg.fotoUrl || perfil.profile_picture_url;
+    $('foto').alt = ultimo ? 'Capa do Reels: ' + (ultimo.legenda || '') : 'Foto de ' + nome;
+    $('hero-card').href = (ultimo && ultimo.permalink) || linkIg;
+    $('hero-legenda').textContent = ultimo ? (ultimo.legenda || 'Assista no Instagram') : 'Siga @' + usuario;
+    $('hero-views').textContent = num(ultimo && ultimo.views);
+    $('hero-likes').textContent = num(ultimo && ultimo.likes);
+    $('hero-envios').textContent = num(ultimo && ultimo.compartilhamentos);
+
+    // Métricas
+    var atualizado = new Date(d.atualizadoEm);
+    $('atualizado').textContent = atualizado.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }) +
+      ', ' + atualizado.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    var cresc = r.crescimento30d;
+    var vezesBase = r.alcance30d && r.seguidores ? (r.alcance30d / r.seguidores) : null;
+    $('cards').innerHTML = [
+      { rotulo: 'Seguidores', icone: 'group', valor: num(r.seguidores), sub: 'Comunidade no Instagram',
+        rodapeIcone: 'trending_up', rodapeValor: cresc ? (cresc.percentual >= 0 ? '+' : '') + pct(cresc.percentual) : '—',
+        rodapeTexto: cresc ? '(+' + num(cresc.novos) + ') nos últimos 30 dias' : 'crescimento em breve' },
+      { rotulo: 'Contas alcançadas / 30 dias', icone: 'radar', valor: num(r.alcance30d), destaque: true,
+        sub: r.alcanceNaoSeguidoresPct != null ? pct(r.alcanceNaoSeguidoresPct) + ' de alcance em não seguidores' : 'Pessoas únicas que viram o conteúdo',
+        rodapeIcone: 'trending_up', rodapeValor: vezesBase ? vezesBase.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + 'x' : '—',
+        rodapeTexto: 'o tamanho da base de seguidores' },
+      { rotulo: 'Taxa de engajamento', icone: 'auto_graph', valor: pct(r.engajamentoMedio, 2),
+        sub: 'Interações ÷ alcance, média de ' + (r.postsAnalisados || 0) + ' posts recentes',
+        rodapeIcone: 'bolt', rodapeCor: 'text-primary', rodapeValor: num(r.mediaInteracoesPost),
+        rodapeTexto: 'interações por post, em média' },
+      { rotulo: 'Visualizações / 30 dias', icone: 'play_circle', valor: num(r.views30d), sub: 'Reels, posts e stories somados',
+        rodapeIcone: 'group', rodapeValor: num(r.contasEngajadas30d), rodapeTexto: 'contas interagiram no período' },
+      { rotulo: 'Views típicas por Reels', icone: 'movie', valor: num(r.medianaViewsReels),
+        sub: 'Mediana dos ' + (r.reelsNaMediana || 0) + ' Reels dos últimos 90 dias',
+        rodapeIcone: 'emoji_events', rodapeCor: 'text-primary', rodapeValor: num(r.recordeViews), rodapeTexto: 'views no Reels recorde' },
+      { rotulo: 'Envios / 30 dias', icone: 'send', valor: num(r.envios30d), destaque: true,
+        sub: 'Vezes que o conteúdo foi enviado para outras pessoas',
+        rodapeIcone: 'share', rodapeValor: r.envios30d && r.alcance30d ? pct(r.envios30d / r.alcance30d * 100) : '—',
+        rodapeTexto: 'taxa de envio (envios ÷ alcance)' }
+    ].map(cartao).join('');
+
+    // Público
+    var p = d.publico || {};
+    if (!p.disponivel) {
+      $('publico').classList.add('hidden');
+      $('publico-indisponivel').classList.remove('hidden');
+      $('base-publico').classList.add('hidden');
+    } else {
+      $('base-publico').textContent = 'Base: ' + num(p.base) + ' seguidores';
+      var g = p.genero || {};
+      var femPrincipal = (g.F || 0) >= (g.M || 0);
+      var principal = femPrincipal ? g.F : g.M;
+      $('donut-f').setAttribute('stroke-dasharray', (g.F || 0) + ', 100');
+      $('donut-m').setAttribute('stroke-dasharray', (g.M || 0) + ', 100');
+      $('donut-m').setAttribute('stroke-dashoffset', -(g.F || 0));
+      $('genero-principal').textContent = pct(principal, 0);
+      $('genero-principal-rotulo').textContent = femPrincipal ? 'Feminino' : 'Masculino';
+      $('leg-f').textContent = pct(g.F || 0, 0) + ' mulheres';
+      $('leg-m').textContent = pct(g.M || 0, 0) + ' homens';
+      $('leg-u').textContent = pct(g.U || 0, 0) + ' não informado';
+      if (!g.U) $('leg-u-item').classList.add('hidden');
+
+      var idades = (p.idade || []).filter(function (x) { return x.pct >= 1; });
+      var maior = Math.max.apply(null, idades.map(function (x) { return x.pct; }).concat([0]));
+      $('idades').innerHTML = idades.map(function (x) {
+        var top = x.pct === maior;
+        return '<div><div class="flex justify-between text-xs font-display font-semibold mb-1 text-charcoal-dark"><span>' +
+          esc(x.faixa.replace('-', ' — ')) + ' anos</span><span class="font-bold ' + (top ? 'text-electric-magenta' : 'text-secondary') + '">' + pct(x.pct) + '</span></div>' +
+          '<div class="w-full h-2.5 rounded-full bg-muted-stone overflow-hidden"><div class="h-full rounded-full ' + (top ? 'bg-electric-magenta' : 'bg-charcoal-dark') + '" style="width:' + x.pct + '%"></div></div></div>';
+      }).join('');
+      var jovens = (p.idade || []).filter(function (x) { return x.faixa === '18-24' || x.faixa === '25-34'; })
+        .reduce(function (s, x) { return s + x.pct; }, 0);
+      $('nota-idade').textContent = jovens ? '*' + pct(jovens, 0) + ' do público tem entre 18 e 34 anos.' : '';
+
+      $('cidades').innerHTML = (p.cidades || []).slice(0, 4).map(function (c, i) {
+        return '<div class="flex items-center justify-between bg-pure-white p-3 rounded-xl shadow-sm gap-2"><div class="flex items-center gap-2.5 min-w-0">' +
+          '<span class="w-6 h-6 shrink-0 rounded-full flex items-center justify-center font-bold text-xs ' + (i === 0 ? 'bg-primary-fixed text-primary' : 'bg-secondary-fixed text-charcoal-dark') + '">0' + (i + 1) + '</span>' +
+          '<span class="text-body-md text-charcoal-dark font-medium truncate">' + esc(c.nome.replace(/\s*\(state\)/, '')) + '</span></div>' +
+          '<span class="font-display text-button-text text-charcoal-dark font-bold">' + pct(c.pct) + '</span></div>';
+      }).join('');
+      $('paises').innerHTML = (p.paises || []).length ? '<span class="material-symbols-outlined text-sm">public</span> ' +
+        p.paises.slice(0, 3).map(function (x) { return esc(pct(x.pct) + ' ' + (PAISES[x.codigo] || x.codigo)); }).join(' • ') : '';
+    }
+
+    // Destaques
+    $('carrossel').innerHTML = (d.destaques || []).map(function (m) {
+      var icone = m.tipo === 'Reels' ? 'play_arrow' : (m.tipo === 'Carrossel' ? 'view_carousel' : 'image');
+      return '<a href="' + esc(m.permalink) + '" target="_blank" rel="noopener" class="snap-start shrink-0 w-[78%] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] group relative rounded-3xl overflow-hidden bg-charcoal-dark shadow-md flex flex-col justify-end aspect-[9/16] transition-transform duration-300 hover:-translate-y-1">' +
+        '<img src="' + esc(m.thumb) + '" alt="" loading="lazy" referrerpolicy="no-referrer" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">' +
+        '<div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark via-charcoal-dark/40 to-transparent"></div>' +
+        '<div class="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-charcoal-dark/80 backdrop-blur-md text-pure-white text-[11px] font-bold">' +
+        '<span class="material-symbols-outlined text-xs text-electric-magenta">' + icone + '</span>' + esc(m.tipo) + '</div>' +
+        '<div class="relative z-10 p-5 flex flex-col gap-2"><p class="font-display text-headline-sm text-pure-white leading-snug line-clamp-2">' + esc(m.legenda || 'Ver no Instagram') + '</p>' +
+        '<div class="grid grid-cols-2 gap-x-2 gap-y-2.5 mt-1 bg-pure-white/10 backdrop-blur-md rounded-xl p-3">' +
+        [['visibility', m.views, 'Views'], ['favorite', m.likes, 'Curtidas'], ['send', m.compartilhamentos, 'Envios'], ['bookmark', m.salvos, 'Salvos']].map(function (x) {
+          return '<div class="flex items-center gap-1.5 min-w-0"><span class="material-symbols-outlined text-[16px] ' + (x[2] === 'Envios' ? 'text-electric-magenta' : 'text-pure-white/70') + '">' + x[0] + '</span>' +
+            '<div class="min-w-0 leading-tight"><span class="block font-display text-sm text-pure-white font-bold whitespace-nowrap">' + num(x[1]) + '</span>' +
+            '<span class="block text-[10px] text-pure-white/70 uppercase tracking-wide">' + x[2] + '</span></div></div>';
+        }).join('') +
+        '</div></div></a>';
+    }).join('');
+
+    // Como eu integro marcas
+    var integ = cfg.integracoes;
+    if (integ && (integ.texto || (integ.exemplos || []).length)) {
+      $('integracoes').classList.remove('hidden');
+      $('nav-integracoes').classList.remove('hidden');
+      $('integracoes-texto').textContent = integ.texto || '';
+      $('integracoes-pontos').innerHTML = (integ.pontos || []).map(function (t) {
+        return '<li class="flex items-start gap-3"><span class="material-symbols-outlined text-electric-magenta text-xl">check_circle</span><span class="text-body-md text-pure-white/90">' + esc(t) + '</span></li>';
+      }).join('');
+      var codigo = function (url) { var m = String(url || '').match(/\/(?:reel|p|tv)\/([^/?#]+)/); return m && m[1]; };
+      $('integracoes-exemplos').innerHTML = (integ.exemplos || []).map(function (ex) {
+        var post = (d.posts || []).filter(function (x) { return codigo(x.permalink) === codigo(ex.link); })[0] || {};
+        var fundo = post.thumb ? '<img src="' + esc(post.thumb) + '" alt="" loading="lazy" referrerpolicy="no-referrer" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">'
+          : '<div class="absolute inset-0 bg-gradient-to-br from-[#E21A63] to-[#8A0038]"></div>';
+        return '<a href="' + esc(ex.link) + '" target="_blank" rel="noopener" class="group relative w-full max-w-[260px] rounded-3xl overflow-hidden bg-charcoal-dark shadow-xl aspect-[9/16] flex flex-col justify-end ring-1 ring-pure-white/10">' + fundo +
+          '<div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark via-charcoal-dark/30 to-transparent"></div>' +
+          '<div class="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-charcoal-dark/80 backdrop-blur-md text-[11px] font-bold"><span class="material-symbols-outlined text-xs text-electric-magenta">play_arrow</span>Ver no Instagram</div>' +
+          '<div class="relative z-10 p-5 flex flex-col gap-1.5">' +
+          '<span class="self-start text-[11px] font-bold uppercase tracking-wider bg-electric-magenta px-2.5 py-0.5 rounded-md">' + esc(ex.produto) + '</span>' +
+          (post.legenda ? '<p class="font-display text-headline-sm leading-snug line-clamp-3">' + esc(post.legenda) + '</p>' : '') +
+          (ex.nota ? '<p class="text-xs text-pure-white/70 italic">' + esc(ex.nota) + '</p>' : '') +
+          '</div></a>';
+      }).join('');
+    }
+
+    // Parceiros
+    if ((cfg.parceiros || []).length) {
+      $('parcerias').classList.remove('hidden');
+      $('nav-parcerias').classList.remove('hidden');
+      $('lista-parceiros').innerHTML = cfg.parceiros.map(function (x) {
+        var conteudo = x.logoUrl ? '<img src="' + esc(x.logoUrl) + '" alt="' + esc(x.nome) + '" class="max-h-12 max-w-full object-contain">'
+          : '<span class="font-display text-headline-sm text-charcoal-dark">' + esc(x.nome) + '</span>';
+        var tag = x.link ? 'a href="' + esc(x.link) + '" target="_blank" rel="noopener"' : 'div';
+        return '<' + tag + ' class="h-24 bg-surface-container-lowest rounded-2xl shadow-sm flex items-center justify-center p-4">' + conteudo + '</' + tag.split(' ')[0] + '>';
+      }).join('');
+    }
+
+    // Contato
+    var c = cfg.contato || {};
+    ['contato-email', 'rodape-email'].forEach(function (id) { $(id).textContent = c.email; $(id).href = 'mailto:' + c.email; });
+    $('contato-whatsapp').textContent = c.whatsappExibicao || c.whatsapp;
+    $('contato-whatsapp').href = wa;
+    if (cfg.selo) { $('selo').classList.remove('hidden'); $('selo-texto').textContent = cfg.selo; }
+    $('rodape-instagram').href = linkIg;
+    $('ano').textContent = new Date().getFullYear();
+
+    // Contador de visitas (GoatCounter): só liga se o código estiver no site.config.json
+    if (cfg.goatcounter) {
+      var gc = document.createElement('script');
+      gc.async = true;
+      gc.src = 'https://gc.zgo.at/count.js';
+      gc.dataset.goatcounter = 'https://' + cfg.goatcounter + '.goatcounter.com/count';
+      document.body.appendChild(gc);
+    }
+
+    $('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = new FormData(e.target);
+      var corpo = 'Nome / agência: ' + f.get('nome') + '\nMarca: ' + f.get('marca') + '\nE-mail: ' + f.get('email') +
+        '\nTelefone: ' + f.get('telefone') + '\n\n' + f.get('mensagem');
+      window.location.href = 'mailto:' + c.email + '?subject=' + encodeURIComponent('Proposta de parceria — ' + f.get('marca')) +
+        '&body=' + encodeURIComponent(corpo);
+    });
+  }
+
+  document.querySelectorAll('[data-rolar]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var el = $('carrossel');
+      el.scrollBy({ left: Number(b.dataset.rolar) * el.clientWidth * 0.9, behavior: 'smooth' });
+    });
+  });
+
+  Promise.all([carregar('site.config.json'), carregar('data/instagram.json')])
+    .then(function (res) { render(res[0], res[1]); })
+    .catch(function (e) { console.error(e); $('aviso-erro').classList.remove('hidden'); });
+})();
+</script>
+</body>
+</html>
