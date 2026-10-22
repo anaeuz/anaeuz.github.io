@@ -63,11 +63,16 @@ def api(endpoint, params=None):
         raise ErroApi("{}: {}".format(nome, e.reason))
 
 
-def tentar(descricao, fn):
+FALHAS_CRITICAS = []  # falhas que fazem a Action ficar vermelha (e o GitHub mandar e-mail)
+
+
+def tentar(descricao, fn, critico=False):
     try:
         return fn()
     except ErroApi as e:
         print("⚠️  {} — {}".format(descricao, e), file=sys.stderr)
+        if critico:
+            FALHAS_CRITICAS.append(descricao)
         return None
 
 
@@ -195,7 +200,7 @@ def detalhar_midia(m, buscar_insights=True):
 def insights_conta(desde, ate):
     janela = {"period": "day", "metric_type": "total_value", "since": desde, "until": ate}
     totais = valores_insight(tentar("insights da conta", lambda: api(
-        "me/insights", dict(janela, metric="reach,views,accounts_engaged,total_interactions"))))
+        "me/insights", dict(janela, metric="reach,views,accounts_engaged,total_interactions")), critico=True))
     totais.update(valores_insight(tentar("envios da conta", lambda: api(
         "me/insights", dict(janela, metric="shares")))))
 
@@ -217,7 +222,7 @@ def insights_conta(desde, ate):
 
 
 def demografia(breakdown):
-    r = tentar("público por " + breakdown, lambda: api("me/insights", {
+    r = tentar("público por " + breakdown, critico=True, fn=lambda: api("me/insights", {
         "metric": "follower_demographics", "period": "lifetime", "metric_type": "total_value",
         "timeframe": "this_month", "breakdown": breakdown,
     }))
@@ -231,7 +236,7 @@ def montar_publico():
     paises = demografia("country")
     base = sum(v for _, v in genero) or sum(v for _, v in idade)
     if not base:
-        return {"disponivel": False}
+        return {"disponivel": False, "motivo": "indisponivel"}
 
     def p(v):
         return round(v / base * 100, 1)
@@ -346,10 +351,38 @@ def main():
                                      "likes", "comentarios", "salvos", "compartilhamentos")} for p in posts],
     }
 
+    preservar_dados_anteriores(dados, seguidores)
+
     with open(os.path.join(PASTA_DADOS, "instagram.json"), "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
     print("✅ @{}: {} seguidores, {} posts analisados.".format(
         perfil.get("username"), seguidores, len(posts)))
+    if FALHAS_CRITICAS:
+        sys.exit("❌ Falhas: {}. O site mantém os últimos valores bons.".format(", ".join(FALHAS_CRITICAS)))
+
+
+def preservar_dados_anteriores(dados, seguidores):
+    """Se alguma métrica falhar, mantém o último valor bom em vez de mostrar vazio no site."""
+    try:
+        with open(os.path.join(PASTA_DADOS, "instagram.json"), encoding="utf-8") as f:
+            anterior = json.load(f)
+    except (OSError, ValueError):
+        return
+    if anterior.get("exemplo"):
+        return
+    mantidos = []
+    for chave, valor in dados["resumo"].items():
+        if valor is None and anterior.get("resumo", {}).get(chave) is not None:
+            dados["resumo"][chave] = anterior["resumo"][chave]
+            mantidos.append(chave)
+    if not dados["publico"].get("disponivel"):
+        if seguidores < 100:
+            dados["publico"]["motivo"] = "poucos_seguidores"
+        elif anterior.get("publico", {}).get("disponivel"):
+            dados["publico"] = anterior["publico"]
+            mantidos.append("publico")
+    if mantidos:
+        print("ℹ️  Mantidos os valores anteriores de: " + ", ".join(mantidos))
 
 
 if __name__ == "__main__":

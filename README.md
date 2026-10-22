@@ -24,8 +24,7 @@ O token fica guardado como segredo no GitHub e nunca aparece no site.
 Edite o `site.config.json`:
 
 - `nome`, `usuario`, `descricao`, `tags`, `manifesto`
-- `fotoUrl`: foto principal. Coloque uma foto sua em `img/` e use `"img/minha-foto.jpg"`
-- `logoUrl`: deixe `""` se não tiver logo
+- `fotoUrl` (opcional): foto de reserva para o card do topo, caso a capa do último Reels não carregue. Coloque uma foto sua em `img/` e use `"img/minha-foto.jpg"`. Vazio usa a foto de perfil.
 - `contato.whatsapp`: só números, com DDI e DDD (ex.: `5511987654321`)
 - `selo`: frase de confiança, por exemplo sobre nota fiscal e contrato. Só preencha se for verdade
 - `parceiros`: `[{"nome": "Marca X", "logoUrl": "img/marca-x.png", "link": "https://..."}]`

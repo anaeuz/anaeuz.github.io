@@ -28,6 +28,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Coletar dados da API
+        id: coleta
         # se a coleta falhar, o site é publicado com os últimos dados salvos
         continue-on-error: true
         run: python scripts/coletar_instagram.py
@@ -45,3 +46,9 @@ jobs:
           path: .
       - id: deploy
         uses: actions/deploy-pages@v4
+      - name: Avisar se a coleta falhou
+        # o site já foi publicado; isto só deixa a execução vermelha para o GitHub mandar e-mail
+        if: steps.coleta.outcome == 'failure'
+        run: |
+          echo "::error::A coleta do Instagram falhou. O site está no ar com os últimos dados salvos. Veja o passo 'Coletar dados da API'."
+          exit 1

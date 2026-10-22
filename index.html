@@ -114,7 +114,8 @@ tailwind.config = { theme: { extend: {
           </div>
           <a id="hero-card" target="_blank" rel="noopener" class="block relative w-full max-w-[340px] bg-paper-cream p-4 rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-300">
             <div class="relative rounded-2xl overflow-hidden bg-charcoal-dark aspect-[9/13]">
-              <img id="foto" alt="" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-br from-[#E21A63] via-[#C91353] to-[#8A0038] flex items-center justify-center"><span class="material-symbols-outlined text-pure-white/30 text-7xl">movie</span></div>
+              <img id="foto" alt="" class="relative w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark/80 via-transparent to-transparent flex flex-col justify-end p-5">
                 <span class="text-xs font-bold tracking-wider uppercase text-primary-fixed bg-electric-magenta/80 px-2.5 py-0.5 rounded-md self-start">Último Reels no ar</span>
                 <p id="hero-legenda" class="font-display text-headline-sm text-pure-white mt-1 line-clamp-2"></p>
@@ -163,7 +164,7 @@ tailwind.config = { theme: { extend: {
         </div>
         <span id="base-publico" class="self-start md:self-auto px-3.5 py-1.5 rounded-full bg-primary-fixed font-display text-label-caps text-on-primary-fixed uppercase"></span>
       </div>
-      <div id="publico-indisponivel" class="hidden text-body-md text-secondary">Os dados de público aparecem quando a conta passa de 100 seguidores.</div>
+      <div id="publico-indisponivel" class="hidden text-body-md text-secondary"></div>
       <div id="publico" class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="flex flex-col gap-4 bg-surface-container-low p-6 rounded-2xl">
           <div class="flex items-center justify-between">
@@ -359,6 +360,13 @@ tailwind.config = { theme: { extend: {
   }
   var PAISES = { BR: 'Brasil', PT: 'Portugal', US: 'EUA', AR: 'Argentina', ES: 'Espanha', MX: 'México', AO: 'Angola', JP: 'Japão', IT: 'Itália', FR: 'França', GB: 'Reino Unido', DE: 'Alemanha', CA: 'Canadá' };
 
+  var CAPA_RESERVA = '<div class="absolute inset-0 bg-gradient-to-br from-[#E21A63] via-[#C91353] to-[#8A0038] flex items-center justify-center">' +
+    '<span class="material-symbols-outlined text-pure-white/30 text-7xl">movie</span></div>';
+  // imagem por cima da capa reserva; se o link expirar, a imagem some e a reserva aparece
+  function capa(url, classes) {
+    return CAPA_RESERVA + (url ? '<img src="' + esc(url) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover ' + classes + '">' : '');
+  }
+
   function cartao(c) {
     return '<div class="bg-surface-container-lowest p-6 rounded-3xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">' +
       '<div class="flex items-center justify-between gap-2"><span class="font-display text-label-caps text-secondary uppercase">' + c.rotulo + '</span>' +
@@ -383,6 +391,7 @@ tailwind.config = { theme: { extend: {
     document.querySelectorAll('[data-arroba]').forEach(function (el) { el.textContent = '@' + usuario; });
     if (d.exemplo) $('aviso-exemplo').classList.remove('hidden');
 
+    $('avatar').onerror = function () { this.parentNode.classList.add('hidden'); };
     $('avatar').src = perfil.profile_picture_url || cfg.fotoUrl;
     $('btn-whatsapp').href = wa;
 
@@ -397,8 +406,10 @@ tailwind.config = { theme: { extend: {
     }).join('');
     $('manifesto').textContent = cfg.manifesto || perfil.biography || '';
     var ultimo = d.ultimoReel;
+    var opcoesFoto = [ultimo && ultimo.thumb, cfg.fotoUrl, perfil.profile_picture_url].filter(Boolean);
     $('foto').referrerPolicy = 'no-referrer';
-    $('foto').src = (ultimo && ultimo.thumb) || cfg.fotoUrl || perfil.profile_picture_url;
+    $('foto').onerror = function () { opcoesFoto.shift(); if (opcoesFoto.length) this.src = opcoesFoto[0]; else this.remove(); };
+    if (opcoesFoto.length) $('foto').src = opcoesFoto[0]; else $('foto').remove();
     $('foto').alt = ultimo ? 'Capa do Reels: ' + (ultimo.legenda || '') : 'Foto de ' + nome;
     $('hero-card').href = (ultimo && ultimo.permalink) || linkIg;
     $('hero-legenda').textContent = ultimo ? (ultimo.legenda || 'Assista no Instagram') : 'Siga @' + usuario;
@@ -440,6 +451,9 @@ tailwind.config = { theme: { extend: {
     if (!p.disponivel) {
       $('publico').classList.add('hidden');
       $('publico-indisponivel').classList.remove('hidden');
+      $('publico-indisponivel').textContent = p.motivo === 'poucos_seguidores'
+        ? 'Os dados de público aparecem quando a conta passa de 100 seguidores.'
+        : 'Os dados de público estão sendo atualizados. Volte em algumas horas.';
       $('base-publico').classList.add('hidden');
     } else {
       $('base-publico').textContent = 'Base: ' + num(p.base) + ' seguidores';
@@ -482,7 +496,7 @@ tailwind.config = { theme: { extend: {
     $('carrossel').innerHTML = (d.destaques || []).map(function (m) {
       var icone = m.tipo === 'Reels' ? 'play_arrow' : (m.tipo === 'Carrossel' ? 'view_carousel' : 'image');
       return '<a href="' + esc(m.permalink) + '" target="_blank" rel="noopener" class="snap-start shrink-0 w-[78%] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] group relative rounded-3xl overflow-hidden bg-charcoal-dark shadow-md flex flex-col justify-end aspect-[9/16] transition-transform duration-300 hover:-translate-y-1">' +
-        '<img src="' + esc(m.thumb) + '" alt="" loading="lazy" referrerpolicy="no-referrer" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">' +
+        capa(m.thumb, 'group-hover:scale-105 transition-transform duration-500 opacity-90') +
         '<div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark via-charcoal-dark/40 to-transparent"></div>' +
         '<div class="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-charcoal-dark/80 backdrop-blur-md text-pure-white text-[11px] font-bold">' +
         '<span class="material-symbols-outlined text-xs text-electric-magenta">' + icone + '</span>' + esc(m.tipo) + '</div>' +
@@ -508,8 +522,7 @@ tailwind.config = { theme: { extend: {
       var codigo = function (url) { var m = String(url || '').match(/\/(?:reel|p|tv)\/([^/?#]+)/); return m && m[1]; };
       $('integracoes-exemplos').innerHTML = (integ.exemplos || []).map(function (ex) {
         var post = (d.posts || []).filter(function (x) { return codigo(x.permalink) === codigo(ex.link); })[0] || {};
-        var fundo = post.thumb ? '<img src="' + esc(post.thumb) + '" alt="" loading="lazy" referrerpolicy="no-referrer" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">'
-          : '<div class="absolute inset-0 bg-gradient-to-br from-[#E21A63] to-[#8A0038]"></div>';
+        var fundo = capa(post.thumb, 'group-hover:scale-105 transition-transform duration-500');
         return '<a href="' + esc(ex.link) + '" target="_blank" rel="noopener" class="group relative w-full max-w-[260px] rounded-3xl overflow-hidden bg-charcoal-dark shadow-xl aspect-[9/16] flex flex-col justify-end ring-1 ring-pure-white/10">' + fundo +
           '<div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark via-charcoal-dark/30 to-transparent"></div>' +
           '<div class="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-charcoal-dark/80 backdrop-blur-md text-[11px] font-bold"><span class="material-symbols-outlined text-xs text-electric-magenta">play_arrow</span>Ver no Instagram</div>' +
