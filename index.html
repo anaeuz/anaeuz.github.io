@@ -105,7 +105,7 @@ tailwind.config = { theme: { extend: {
           <div id="tags" class="flex flex-wrap gap-2 pt-1"></div>
           <div id="hero-alcance" class="hidden flex items-center gap-3">
             <span id="hero-alcance-valor" class="font-display text-[44px] sm:text-[56px] leading-none font-extrabold tracking-tight"></span>
-            <span class="text-body-sm sm:text-body-md text-pure-white/85 leading-tight">contas alcançadas<br>nos últimos 30 dias</span>
+            <span class="text-body-sm sm:text-body-md text-pure-white/85 leading-tight">visualizações nos<br>últimos 30 dias</span>
           </div>
           <div class="bg-charcoal-dark/25 backdrop-blur-md rounded-2xl p-5">
             <p id="manifesto" class="text-body-lg text-pure-white/95 leading-relaxed"></p>
@@ -408,8 +408,8 @@ tailwind.config = { theme: { extend: {
       return '<span class="px-3.5 py-1 rounded-full text-xs font-display font-semibold ' +
         (i === 0 ? 'bg-pure-white text-charcoal-dark shadow-sm' : 'bg-pure-white/15 backdrop-blur-md text-pure-white') + '">' + esc(t) + '</span>';
     }).join('');
-    if (r.alcance30d) {
-      $('hero-alcance-valor').textContent = num(r.alcance30d);
+    if (r.views30d) {
+      $('hero-alcance-valor').textContent = num(r.views30d);
       $('hero-alcance').classList.remove('hidden');
     }
     $('manifesto').textContent = cfg.manifesto || perfil.biography || '';
