@@ -55,7 +55,7 @@ tailwind.config = { theme: { extend: {
 </head>
 <body class="bg-background font-body text-body-md text-on-surface antialiased">
 
-<header id="topo" class="fixed top-0 w-full z-50 bg-paper-cream/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,25,23,0.06)]">
+<header id="topo" class="hidden xl:block fixed top-0 w-full z-50 bg-paper-cream/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,25,23,0.06)]">
   <div class="h-20 max-w-7xl mx-auto px-4 sm:px-gutter flex items-center justify-between gap-4">
     <nav class="hidden xl:flex items-center gap-space-lg font-display text-button-text text-on-surface-variant">
       <a class="hover:text-on-surface transition-colors" href="#sobre">Sobre</a>
@@ -78,7 +78,7 @@ tailwind.config = { theme: { extend: {
   </div>
 </header>
 
-<main class="w-full pt-20 bg-background">
+<main class="w-full pt-4 xl:pt-20 bg-background">
 
   <div id="aviso-exemplo" class="hidden max-w-7xl mx-auto px-4 sm:px-gutter pt-4">
     <div class="flex items-start gap-2 rounded-2xl bg-primary-fixed text-on-primary-fixed px-4 py-3 text-body-sm">
@@ -421,19 +421,19 @@ tailwind.config = { theme: { extend: {
     var cresc = r.crescimento30d;
     var vezesBase = r.alcance30d && r.seguidores ? (r.alcance30d / r.seguidores) : null;
     $('cards').innerHTML = [
-      { rotulo: 'Seguidores', icone: 'group', valor: num(r.seguidores), sub: 'Comunidade no Instagram',
-        rodapeIcone: 'trending_up', rodapeValor: cresc ? (cresc.percentual >= 0 ? '+' : '') + pct(cresc.percentual) : '—',
-        rodapeTexto: cresc ? '(+' + num(cresc.novos) + ') nos últimos 30 dias' : 'crescimento em breve' },
       { rotulo: 'Contas alcançadas / 30 dias', icone: 'radar', valor: num(r.alcance30d), destaque: true,
         sub: r.alcanceNaoSeguidoresPct != null ? pct(r.alcanceNaoSeguidoresPct) + ' de alcance em não seguidores' : 'Pessoas únicas que viram o conteúdo',
         rodapeIcone: 'trending_up', rodapeValor: vezesBase ? vezesBase.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + 'x' : '—',
         rodapeTexto: 'o tamanho da base de seguidores' },
+      { rotulo: 'Visualizações / 30 dias', icone: 'play_circle', valor: num(r.views30d), sub: 'Reels, posts e stories somados',
+        rodapeIcone: 'group', rodapeValor: num(r.contasEngajadas30d), rodapeTexto: 'contas interagiram no período' },
+      { rotulo: 'Seguidores', icone: 'group', valor: num(r.seguidores), sub: 'Comunidade no Instagram',
+        rodapeIcone: 'trending_up', rodapeValor: cresc ? (cresc.percentual >= 0 ? '+' : '') + pct(cresc.percentual) : '—',
+        rodapeTexto: cresc ? '(+' + num(cresc.novos) + ') nos últimos 30 dias' : 'crescimento em breve' },
       { rotulo: 'Taxa de engajamento', icone: 'auto_graph', valor: pct(r.engajamentoMedio, 2),
         sub: 'Interações ÷ alcance, média de ' + (r.postsAnalisados || 0) + ' posts recentes',
         rodapeIcone: 'bolt', rodapeCor: 'text-primary', rodapeValor: num(r.mediaInteracoesPost),
         rodapeTexto: 'interações por post, em média' },
-      { rotulo: 'Visualizações / 30 dias', icone: 'play_circle', valor: num(r.views30d), sub: 'Reels, posts e stories somados',
-        rodapeIcone: 'group', rodapeValor: num(r.contasEngajadas30d), rodapeTexto: 'contas interagiram no período' },
       { rotulo: 'Views típicas por Reels', icone: 'movie', valor: num(r.medianaViewsReels),
         sub: 'Mediana dos ' + (r.reelsNaMediana || 0) + ' Reels dos últimos 90 dias',
         rodapeIcone: 'emoji_events', rodapeCor: 'text-primary', rodapeValor: num(r.recordeViews), rodapeTexto: 'views no Reels recorde' },
