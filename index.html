@@ -121,7 +121,7 @@ tailwind.config = { theme: { extend: {
               <div class="absolute inset-0 bg-gradient-to-br from-[#E21A63] via-[#C91353] to-[#8A0038] flex items-center justify-center"><span class="material-symbols-outlined text-pure-white/30 text-7xl">movie</span></div>
               <img id="foto" alt="" class="relative w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t from-charcoal-dark/80 via-transparent to-transparent flex flex-col justify-end p-5">
-                <span class="text-xs font-bold tracking-wider uppercase text-primary-fixed bg-electric-magenta/80 px-2.5 py-0.5 rounded-md self-start">Último Reels no ar</span>
+                <span class="text-xs font-bold tracking-wider uppercase text-primary-fixed bg-electric-magenta/80 px-2.5 py-0.5 rounded-md self-start" id="hero-rotulo">Último Reels no ar</span>
                 <p id="hero-legenda" class="font-display text-headline-sm text-pure-white mt-1 line-clamp-2"></p>
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-pure-white/80 mt-2">
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">visibility</span><span id="hero-views"></span> views</span>
@@ -413,7 +413,15 @@ tailwind.config = { theme: { extend: {
       $('hero-alcance').classList.remove('hidden');
     }
     $('manifesto').textContent = cfg.manifesto || perfil.biography || '';
-    var ultimo = d.ultimoReel;
+    // Reels fixado (site.config.json > reelFixado): aparece no card principal e primeiro nos destaques
+    var codigoIg = function (url) { var m = String(url || '').match(/\/(?:reels?|p|tv)\/([^/?#]+)/); return m && m[1]; };
+    var fixado = cfg.reelFixado ? (d.posts || []).filter(function (x) { return codigoIg(x.permalink) === codigoIg(cfg.reelFixado); })[0] : null;
+    if (cfg.reelFixado && !fixado) fixado = { permalink: cfg.reelFixado, legenda: 'Assista no Instagram' };
+    if (fixado) {
+      $('hero-rotulo').textContent = 'Reels em destaque';
+      d.destaques = [fixado].concat((d.destaques || []).filter(function (x) { return codigoIg(x.permalink) !== codigoIg(fixado.permalink); }));
+    }
+    var ultimo = fixado || d.ultimoReel;
     var opcoesFoto = [ultimo && ultimo.thumb, cfg.fotoUrl, perfil.profile_picture_url].filter(Boolean);
     $('foto').referrerPolicy = 'no-referrer';
     $('foto').onerror = function () { opcoesFoto.shift(); if (opcoesFoto.length) this.src = opcoesFoto[0]; else this.remove(); };
